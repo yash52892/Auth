@@ -42,23 +42,23 @@ const AuthForm = () => {
       setLoading(true);
       const response=await fetch('identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyBTSDcMIiQIhAgney8KSc7Iurf0R3PPKFI',{
         method: 'POST',
-        body:{
+        body:JSON.stringify({
           email:enteredEmail,
           password:enteredPass,
           returnSecureToken:true
-        },
+        }),
         headers: {
           "Content-Type": "application/json",
         }
       })
       if(!response.ok)
     {
-      alert(`${response.error.message}`);
+      const error=await response.json();
+      alert(error.error.errors[0].message);
     }
       const data=await response.json();
     setLoading(false);
     
-    console.log(data);
   }
 }
 

@@ -1,8 +1,13 @@
 import { Link } from 'react-router-dom';
-
+import TokenContext from '../../store/tokenContext';
 import classes from './MainNavigation.module.css';
+import { useContext } from 'react';
 
 const MainNavigation = () => {
+  const tok=useContext(TokenContext);
+  const handleLogout=()=>{
+    tok.handTok(null);
+  }
   return (
     <header className={classes.header}>
       <Link to='/'>
@@ -10,14 +15,14 @@ const MainNavigation = () => {
       </Link>
       <nav>
         <ul>
-          <li>
+        {!tok.token &&<li>
             <Link to='/auth'>Login</Link>
+          </li>}
+          <li>
+          {tok.token && <Link to='/profile'>Profile</Link>}
           </li>
           <li>
-            <Link to='/profile'>Profile</Link>
-          </li>
-          <li>
-            <button>Logout</button>
+          {tok.token && <button onClick={handleLogout}>Logout</button>}
           </li>
         </ul>
       </nav>

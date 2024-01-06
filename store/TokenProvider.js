@@ -10,6 +10,7 @@ const TokenProvider=(props)=>{
     const handleLogin=(id)=>{
         setToken(id);
         localStorage.setItem("id",token);
+        setTimeout(handleLogout, 300000);
     }
     const handleLogout=()=>{
         setToken(null);

@@ -1,9 +1,9 @@
 import React from "react"
 
 const TokenContext=React.createContext({
-    token:'',
-    time:null,
-    handTok: (id)=>{}
+    isLoggedin:false,
+    handleLoggedin: (id)=>{},
+    handleLogout: ()=>{}
 });
 
 export default TokenContext;

@@ -7,9 +7,10 @@ import {useHistory} from 'react-router-dom';
 
 const MainNavigation = () => {
   const tok=useContext(TokenContext);
+
   const history=useHistory();
   const handleLogout=()=>{
-    tok.handTok(null);
+    tok.handleLogout();
     history.replace("/auth")
   }
   return (
@@ -19,14 +20,14 @@ const MainNavigation = () => {
       </Link>
       <nav>
         <ul>
-        {!tok.token &&<li>
+        {!tok.isLoggedin &&<li>
             <Link to='/auth'>Login</Link>
           </li>}
           <li>
-          {tok.token && <Link to='/profile'>Profile</Link>}
+          {tok.isLoggedin && <Link to='/profile'>Profile</Link>}
           </li>
           <li>
-          {tok.token && <button onClick={handleLogout}>Logout</button>}
+          {tok.isLoggedin && <button onClick={handleLogout}>Logout</button>}
           </li>
         </ul>
       </nav>

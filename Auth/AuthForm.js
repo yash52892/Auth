@@ -8,6 +8,7 @@ const AuthForm = () => {
   const [Loading, setLoading] = useState(false);
 
   const history=useHistory();
+  
   const tok=useContext(TokenContext); 
   console.log(tok);
 
@@ -18,7 +19,8 @@ const AuthForm = () => {
   const email = useRef(null);
   const pass = useRef(null);
 
-  const handleAction = async () => {
+  const handleAction = async (event) => {
+    event.preventDefault();
     setLoading(true);
     const enteredEmail = email.current.value;
     const enteredPass = pass.current.value;
@@ -62,16 +64,16 @@ const AuthForm = () => {
           },
         }
       );
+      setLoading(false);
       if (!response.ok) {
         const error = await response.json();
         console.log(error)
         alert(error.error.errors[0].message);
+      }else{
+        const data= await response.json();
+        tok.handleLoggedin(data.idToken);
+        history.replace('/profile');
       }
-      // const data = await response.json();
-      setLoading(false);
-      const data= await response.json();
-      tok.handTok(data.idToken);
-      history.replace('/profile');
     }
   };
   
@@ -80,7 +82,7 @@ const AuthForm = () => {
   return (
     <section className={classes.auth}>
       <h1>{isLogin ? "Login" : "Sign Up"}</h1>
-      <form>
+      <form onSubmit={handleAction}>
         <div className={classes.control}>
           <label htmlFor="email">Your Email</label>
           <input type="email" ref={email} required />
@@ -93,7 +95,7 @@ const AuthForm = () => {
           {Loading ? (
             <span>Sending request....</span>
           ) : (
-            <button onClick={handleAction}>
+            <button type="submit">
               {isLogin ? "Login" : "Sign Up"}
             </button>
           )}

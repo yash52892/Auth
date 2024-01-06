@@ -1,12 +1,15 @@
 import { useState, useRef, useContext } from "react";
 import TokenContext from "../../store/tokenContext";
 import classes from "./AuthForm.module.css";
+import {useHistory} from 'react-router-dom';
 
 const AuthForm = () => {
-  const [isLogin, setIsLogin] = useState(false);
+  const [isLogin, setIsLogin] = useState(true);
   const [Loading, setLoading] = useState(false);
 
-  const tok=useContext(TokenContext);
+  const history=useHistory();
+  const tok=useContext(TokenContext); 
+  console.log(tok);
 
   const switchAuthModeHandler = () => {
     setIsLogin((prevState) => !prevState);
@@ -18,7 +21,7 @@ const AuthForm = () => {
   const handleAction = async () => {
     setLoading(true);
     const enteredEmail = email.current.value;
-    const enteredPass = email.current.value;
+    const enteredPass = pass.current.value;
     if (!isLogin) {
       const response = await fetch(
         "https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyBTSDcMIiQIhAgney8KSc7Iurf0R3PPKFI",
@@ -68,6 +71,7 @@ const AuthForm = () => {
       setLoading(false);
       const data= await response.json();
       tok.handTok(data.idToken);
+      history.replace('/profile');
     }
   };
   
